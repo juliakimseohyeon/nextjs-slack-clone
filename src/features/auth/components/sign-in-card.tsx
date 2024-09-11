@@ -15,6 +15,7 @@ import { FaGithub } from "react-icons/fa";
 
 import { SignInFlow } from "../types";
 import { useAuthActions } from "@convex-dev/auth/react";
+import { TriangleAlert } from "lucide-react";
 
 interface SignInCardProps {
   setState: (state: SignInFlow) => void;
@@ -26,14 +27,33 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [pending, setPending] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleProviderSignIn = (value: "github" | "google") => {
-    setPending(false);
+  const handlePasswordSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setPending(true);
+    setError(null); // reset the error state before each sign-in attempt
+
     try {
-      signIn(value);
-      setPending(true);
+      await signIn("password", { email, password, flow: "signIn" });
     } catch (err) {
-      console.error("Error signing in: ", err);
+      console.error("Error signing in with email and password: ", err);
+      setError("Invalid email or password");
+    } finally {
+      setPending(false);
+    }
+  };
+
+  const handleProviderSignIn = (provider: "github" | "google") => {
+    setError(null);
+    setPending(true);
+
+    try {
+      signIn(provider);
+    } catch (err) {
+      console.error(`Error initiating ${provider} sign-in: ${err}`);
+      setError(`Failed to initiate ${provider} sign-in. Please try again.`);
+      setPending(false);
     }
   };
 
@@ -45,9 +65,14 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
           Use your email or another service to continue
         </CardDescription>
       </CardHeader>
-
+      {error && (
+        <div className="bg-destructive/15 p-3 rounded-md flex items-center gap-x-2 text-sm text-destructive mb-6">
+          <TriangleAlert className="size-4" />
+          <p>{error}</p>
+        </div>
+      )}
       <CardContent className="space-y-5 px-0 pb-0">
-        <form className="space-y-2.5">
+        <form className="space-y-2.5" onSubmit={handlePasswordSignIn}>
           <Input
             disabled={pending}
             value={email}
