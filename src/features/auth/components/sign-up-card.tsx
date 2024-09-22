@@ -26,6 +26,7 @@ interface SignUpCardProps {
 export const SignUpCard = ({ setState }: SignUpCardProps) => {
   const { signIn } = useAuthActions();
 
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -59,7 +60,15 @@ export const SignUpCard = ({ setState }: SignUpCardProps) => {
       }
 
       // If the user doesn't exist, proceed with sign up
-      await signIn("password", { email, password, flow: "signUp" });
+      await signIn("password", {
+        name,
+        email,
+        password,
+        flow: "signUp",
+      });
+      console.log("Signing up with name: ", name);
+      console.log("Signing up with email: ", email);
+      console.log("Signing up with password: ", password);
     } catch (err: any) {
       console.error("Error during sign up:", err);
       setError("An error occurred during sign up. Please try again.");
@@ -98,11 +107,23 @@ export const SignUpCard = ({ setState }: SignUpCardProps) => {
         <form className="space-y-2.5" onSubmit={handlePasswordSignUp}>
           <Input
             disabled={pending}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Full name"
+            type="text"
+            required
+            id="name"
+            name="name"
+          />
+          <Input
+            disabled={pending}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Email"
             type="email"
             required
+            id="email"
+            name="email"
           />
           <Input
             disabled={pending}
@@ -111,6 +132,8 @@ export const SignUpCard = ({ setState }: SignUpCardProps) => {
             placeholder="Password"
             type="password"
             required
+            id="password"
+            name="password"
           />
           <Input
             disabled={pending}
@@ -119,6 +142,8 @@ export const SignUpCard = ({ setState }: SignUpCardProps) => {
             placeholder="Confirm password"
             type="password"
             required
+            id="confirm-password"
+            name="confirm-password"
           />
           <Button type="submit" className="w-full" size="lg" disabled={pending}>
             Continue

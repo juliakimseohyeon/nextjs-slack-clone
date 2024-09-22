@@ -80,6 +80,8 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
             placeholder="Email"
             type="email"
             required
+            id="email"
+            name="email"
           />
           <Input
             disabled={pending}
@@ -88,6 +90,8 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
             placeholder="Password"
             type="password"
             required
+            id="password"
+            name="password"
           />
           <Button type="submit" className="w-full" size="lg" disabled={false}>
             Continue
