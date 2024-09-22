@@ -26,26 +26,31 @@ interface SignUpCardProps {
 export const SignUpCard = ({ setState }: SignUpCardProps) => {
   const { signIn } = useAuthActions();
 
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [userInfo, setUserInfo] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   // Check if user already exists
-  const checkUserExists = useQuery(api.auth.checkUserExists, { email: email });
+  const checkUserExists = useQuery(api.auth.checkUserExists, {
+    email: userInfo.email,
+  });
 
   const handlePasswordSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError(null);
 
-    if (password !== confirmPassword) {
+    if (userInfo.password !== userInfo.confirmPassword) {
       setError("Your passwords don't match.");
       return;
     }
 
-    if (password.length < 8) {
+    if (userInfo.password.length < 8) {
       setError("Your password must be at least 8 characters long");
       return;
     }
@@ -61,14 +66,11 @@ export const SignUpCard = ({ setState }: SignUpCardProps) => {
 
       // If the user doesn't exist, proceed with sign up
       await signIn("password", {
-        name,
-        email,
-        password,
+        name: userInfo.name,
+        email: userInfo.email,
+        password: userInfo.password,
         flow: "signUp",
       });
-      console.log("Signing up with name: ", name);
-      console.log("Signing up with email: ", email);
-      console.log("Signing up with password: ", password);
     } catch (err: any) {
       console.error("Error during sign up:", err);
       setError("An error occurred during sign up. Please try again.");
@@ -107,8 +109,8 @@ export const SignUpCard = ({ setState }: SignUpCardProps) => {
         <form className="space-y-2.5" onSubmit={handlePasswordSignUp}>
           <Input
             disabled={pending}
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            value={userInfo.name}
+            onChange={(e) => setUserInfo({ ...userInfo, name: e.target.value })}
             placeholder="Full name"
             type="text"
             required
@@ -117,8 +119,10 @@ export const SignUpCard = ({ setState }: SignUpCardProps) => {
           />
           <Input
             disabled={pending}
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={userInfo.email}
+            onChange={(e) =>
+              setUserInfo({ ...userInfo, email: e.target.value })
+            }
             placeholder="Email"
             type="email"
             required
@@ -127,8 +131,10 @@ export const SignUpCard = ({ setState }: SignUpCardProps) => {
           />
           <Input
             disabled={pending}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={userInfo.password}
+            onChange={(e) =>
+              setUserInfo({ ...userInfo, password: e.target.value })
+            }
             placeholder="Password"
             type="password"
             required
@@ -137,8 +143,10 @@ export const SignUpCard = ({ setState }: SignUpCardProps) => {
           />
           <Input
             disabled={pending}
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
+            value={userInfo.confirmPassword}
+            onChange={(e) =>
+              setUserInfo({ ...userInfo, confirmPassword: e.target.value })
+            }
             placeholder="Confirm password"
             type="password"
             required

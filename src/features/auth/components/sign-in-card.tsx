@@ -24,8 +24,13 @@ interface SignInCardProps {
 export const SignInCard = ({ setState }: SignInCardProps) => {
   const { signIn } = useAuthActions();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [userInfo, setUserInfo] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -35,7 +40,11 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
     setError(null); // reset the error state before each sign-in attempt
 
     try {
-      await signIn("password", { email, password, flow: "signIn" });
+      await signIn("password", {
+        email: userInfo.email,
+        password: userInfo.password,
+        flow: "signIn",
+      });
     } catch (err) {
       console.error("Error signing in with email and password: ", err);
       setError("Invalid email or password.");
@@ -75,8 +84,10 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
         <form className="space-y-2.5" onSubmit={handlePasswordSignIn}>
           <Input
             disabled={pending}
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={userInfo.email}
+            onChange={(e) =>
+              setUserInfo({ ...userInfo, email: e.target.value })
+            }
             placeholder="Email"
             type="email"
             required
@@ -85,8 +96,10 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
           />
           <Input
             disabled={pending}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={userInfo.password}
+            onChange={(e) =>
+              setUserInfo({ ...userInfo, password: e.target.value })
+            }
             placeholder="Password"
             type="password"
             required
