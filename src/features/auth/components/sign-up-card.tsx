@@ -8,10 +8,10 @@ import {
   CardTitle,
   CardDescription,
   CardContent,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
+} from "@/features/components/ui/card";
+import { Input } from "@/features/components/ui/input";
+import { Button } from "@/features/components/ui/button";
+import { Separator } from "@/features/components/ui/separator";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
 
