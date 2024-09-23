@@ -11,7 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import { currentUser } from "../hooks/current-user";
+import { currentUser } from "../api/use-current-user";
 import { useAuthActions } from "@convex-dev/auth/react";
 
 export const UserButton = () => {
