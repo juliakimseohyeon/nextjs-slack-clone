@@ -1,4 +1,4 @@
-import { ConvexClientProvider } from "@/features/components/ConvexClientProvider";
+import { ConvexClientProvider } from "@/components/ConvexClientProvider";
 import { ConvexAuthNextjsServerProvider } from "@convex-dev/auth/nextjs/server";
 
 import type { Metadata } from "next";
