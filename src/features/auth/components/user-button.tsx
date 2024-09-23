@@ -11,11 +11,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import { currentUser } from "../api/use-current-user";
+import { useCurrentUser } from "../api/use-current-user";
 import { useAuthActions } from "@convex-dev/auth/react";
 
 export const UserButton = () => {
-  const { user, isLoading } = currentUser();
+  const { user, isLoading } = useCurrentUser();
   const { signOut } = useAuthActions();
 
   if (isLoading) {
