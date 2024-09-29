@@ -8,7 +8,7 @@ import { useGetWorkspaces } from "@/features/workspaces/api/use-get-workspaces";
 import { useCreateWorkspaceModal } from "@/features/workspaces/store/use-create-workspace-modal";
 
 export default function Home() {
-  const [modalOpen, setModalOpen] = useCreateWorkspaceModal();
+  const [modalOpen, setModalOpen] = useCreateWorkspaceModal(); // Global useState which stays true wherever this hook is added
   const { workspaces, isLoading } = useGetWorkspaces();
 
   const workspaceId = useMemo(() => workspaces?.[0]?._id, [workspaces]);
