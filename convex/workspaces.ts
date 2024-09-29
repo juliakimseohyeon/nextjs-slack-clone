@@ -39,7 +39,32 @@ export const create = mutation({
 export const get = query({
   args: {},
   handler: async (ctx) => {
-    return await ctx.db.query("workspaces").collect();
+    const userId = await auth.getUserId(ctx);
+
+    if (!userId) {
+      return [];
+    }
+
+    const members = await ctx.db
+      .query("members")
+      .withIndex("by_user_id", (q) => q.eq("userId", userId))
+      .collect(); // Find the "members" that the user is a part of
+
+    const workspaceIds = members.map((member) => member.workspaceId); // Find workspace IDs associated with the member
+
+    const workspaces = [];
+
+    // Map over all workspace IDs that have been returned
+    for (const workspaceId of workspaceIds) {
+      const workspace = await ctx.db.get(workspaceId);
+
+      // If that workspace exists in the database, push it to the workspaces array which was defined above 👆
+      if (workspace) {
+        workspaces.push(workspace);
+      }
+    }
+
+    return workspaces;
   },
 });
 
@@ -50,6 +75,18 @@ export const getById = query({
 
     if (!userId) {
       throw new Error("Unauthorized");
+    }
+
+    // Return only one user with the same workspace id and user id
+    const member = await ctx.db
+      .query("members")
+      .withIndex("by_workspace_id_user_id", (q) =>
+        q.eq("workspaceId", args.id).eq("userId", userId)
+      )
+      .unique();
+
+    if (!member) {
+      null;
     }
 
     return await ctx.db.get(args.id);
