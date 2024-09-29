@@ -39,6 +39,7 @@ export const CreateWorkspaceModal = () => {
       {
         onSuccess(workspaceId) {
           router.push(`/workspace/${workspaceId}`);
+          handleClose();
         },
       }
     );
