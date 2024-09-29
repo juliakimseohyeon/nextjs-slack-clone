@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 import {
   Dialog,
@@ -16,6 +17,8 @@ import { useCreateWorkspaceModal } from "../store/use-create-workspace-modal";
 import { useCreateWorkspace } from "../api/use-create-workspace";
 
 export const CreateWorkspaceModal = () => {
+  const router = useRouter();
+
   const [modalOpen, setModalOpen] = useCreateWorkspaceModal();
   const [name, setName] = useState("");
 
@@ -24,6 +27,7 @@ export const CreateWorkspaceModal = () => {
 
   const handleClose = () => {
     setModalOpen(false);
+    setName("");
     // TODO: clear form
   };
 
@@ -33,8 +37,8 @@ export const CreateWorkspaceModal = () => {
     mutate(
       { name },
       {
-        onSuccess(data) {
-          console.log("Success: ", data);
+        onSuccess(workspaceId) {
+          router.push(`/workspace/${workspaceId}`);
         },
       }
     );
