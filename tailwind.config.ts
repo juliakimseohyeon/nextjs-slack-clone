@@ -22,6 +22,7 @@ const config: Config = {
       },
       colors: {
         purple: "#481349",
+        lightpurple: "#5e2c5f",
         gray: "#ABABAD",
         lightgray: "#F2F2F2",
         background: "hsl(var(--background))",

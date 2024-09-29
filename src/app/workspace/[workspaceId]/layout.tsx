@@ -1,5 +1,10 @@
 "use client";
 
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/ui/resizable";
 import { Sidebar } from "./sidebar";
 import { Toolbar } from "./toolbar";
 
@@ -13,7 +18,20 @@ const WorkspaceIdLayout = ({ children }: WorkspaceIdLayoutProps) => {
       <Toolbar />
       <div className="flex h-[calc(100vh-2.5rem)]">
         <Sidebar />
-        {children}
+        <ResizablePanelGroup
+          direction="horizontal"
+          autoSaveId="slack-workspace-layout"
+        >
+          <ResizablePanel
+            defaultSize={20}
+            minSize={10}
+            className="bg-lightpurple"
+          >
+            <div>Channels Sidebar</div>
+          </ResizablePanel>
+          <ResizableHandle withHandle />
+          <ResizablePanel minSize={20}>{children}</ResizablePanel>
+        </ResizablePanelGroup>
       </div>
     </div>
   );
