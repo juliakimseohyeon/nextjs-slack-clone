@@ -1,12 +1,12 @@
 import { v } from "convex/values";
 
-import { auth } from "./auth";
+import { getAuthUserId } from "@convex-dev/auth/server";
 import { query } from "./_generated/server";
 
 export const currentMember = query({
   args: { workspaceId: v.id("workspaces") },
   handler: async (ctx, args) => {
-    const userId = await auth.getUserId(ctx);
+    const userId = await getAuthUserId(ctx);
 
     if (!userId) {
       return null;
