@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
+import { toast } from "sonner";
 import {
   Dialog,
   DialogContent,
@@ -38,6 +39,7 @@ export const CreateWorkspaceModal = () => {
       { name },
       {
         onSuccess(workspaceId) {
+          toast.success("Workspace created!");
           router.push(`/workspace/${workspaceId}`);
           handleClose();
         },
