@@ -4,6 +4,8 @@ import { useWorkspaceId } from "@/hooks/use-workspace-id";
 
 import { AlertTriangle, Loader } from "lucide-react";
 
+import { WorkspaceHeader } from "./workspace-header";
+
 export const WorkspaceSidebar = () => {
   const workspaceId = useWorkspaceId();
 
@@ -31,6 +33,11 @@ export const WorkspaceSidebar = () => {
     );
   }
   return (
-    <div className="flex flex-col bg-lightpurple h-full">Workspace Header</div>
+    <div className="flex flex-col bg-lightpurple h-full">
+      <WorkspaceHeader
+        workspace={workspace}
+        isAdmin={currentMember.role === "admin"}
+      />
+    </div>
   );
 };
