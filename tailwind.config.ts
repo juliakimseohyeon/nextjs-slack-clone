@@ -25,6 +25,7 @@ const config: Config = {
         lightpurple: "#5e2c5f",
         gray: "#ABABAD",
         lightgray: "#F2F2F2",
+        blue: "#1264a3",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {
